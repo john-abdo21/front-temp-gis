@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const api_url = 'http://127.0.0.1:8000';
+const api_url = 'http://2.59.156.122:8000';
 
 export const FilterApi = axios.create({
   baseURL: api_url,
