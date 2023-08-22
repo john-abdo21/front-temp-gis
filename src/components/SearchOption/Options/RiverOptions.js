@@ -1,158 +1,196 @@
-import React, { useEffect } from 'react'
+import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Modal, Form, Input, Button, Row, Col, Divider, Collapse, Checkbox, Select } from 'antd'
+import { Form, Input, Row, Col } from 'antd'
 import customLabel from '../../../features/utils/CustomLabel'
+import { ErrorCheck } from '../Error/ErrorCheck'
 import {
-    setIsRiverDistance,
-    setIsMinRiverDistance,
-    setIsRiverLength,
-    setIsRiverMaxLength,
-    setIsRiverWidth,
-    setIsRiverMaxWidth,
-    setIsRiverName,
+    setRMinDistance,
+    setRMaxDistance,
+    setRMinLength,
+    setRMaxLength,
+    setRMinWidth,
+    setRMaxWidth,
+    setErrorMessage,
 } from '../../../features/filter/OptionReducer'
 
+import './options.css'
+
 const RiverOptions = () => {
-    const dispatch = useDispatch();
-    const options = useSelector(state => state.options.options.river, []);
-    const enabled = options.distance.isSet
-    const lengthEnabled = options.length.isSet
-    const widthEnabled = options.width.isSet
-    const nameEnabled = options.name.isSet
-    const handleChange = e => {
-        return (true)
+    const [enabled, setEnabled] = useState(true)
+    const [r_min_distance, set_r_min_distance] = useState('')
+    const [r_max_distance, set_r_max_distance] = useState('')
+    const [r_min_length, set_r_min_length] = useState('')
+    const [r_max_length, set_r_max_length] = useState('')
+    const [r_min_width, set_r_min_width] = useState('')
+    const [r_max_width, set_r_max_width] = useState('')
+
+    const dispatch = useDispatch()
+
+    const onChangeRMinDistance = e => {
+        const value = e.target.value
+        dispatch(setRMinDistance(value))
+        set_r_min_distance(value)
+    }
+    const onChangeRMaxDistance = e => {
+        const value = e.target.value
+        dispatch(setRMaxDistance(value))
+        set_r_max_distance(value)
+    }
+    const onChangeRMinLength = e => {
+        const value = e.target.value
+        dispatch(setRMinLength(value))
+        set_r_min_length(value)
+    }
+    const onChangeRMaxLength = e => {
+        const value = e.target.value
+        dispatch(setRMaxLength(value))
+        set_r_max_length(value)
+    }
+    const onChangeRMinWidth = e => {
+        const value = e.target.value
+        dispatch(setRMinWidth(value))
+        set_r_min_width(value)
+    }
+    const onChangeRMaxWidth = e => {
+        const value = e.target.value
+        dispatch(setRMaxWidth(value))
+        set_r_max_width(value)
     }
 
-    const onChangeDistance = e => {
-        dispatch(setIsRiverDistance(e.target.checked))
-    }
-    const onChangeMinDistanceLabel = e => {
-        dispatch(setIsMinRiverDistance(e.target.checked))
-    }
-    const onChangeLength = e => {
-        dispatch(setIsRiverLength(e.target.checked))
-    }
-    const onChangeMaxLengthLabel = e => {
-        dispatch(setIsRiverMaxLength(e.target.checked))
-    }
-    const onChangeWidth = e => {
-        dispatch(setIsRiverWidth(e.target.checked))
-    }
-    const onChangeMaxWidthLabel = e => {
-        dispatch(setIsRiverMaxWidth(e.target.checked))
-    }
-    const onChangeName = e => {
-        dispatch(setIsRiverName(e.target.checked))
-    }
-    console.log(options)
+    const options = useSelector(state => state, [])
+    dispatch(setErrorMessage(ErrorCheck(options)))
 
     return (
         <>
-            <p
+            <div
                 style={{
                     paddingLeft: 24,
                 }}
             >
                 <Row gutter={[6]}>
                     <Col xs={6}>
-                        <Checkbox onChange={onChangeDistance}>Enable</Checkbox>
+                        <span className='option-title'>Distance</span>
                     </Col>
                     <Col xs={18}>
                         <Row gutter={[6]}>
                             <Col xs={12}>
-                                <Form.Item label={customLabel('Min Distance', false, onChangeMinDistanceLabel, enabled)} name="R_Min_Distance" rules={[{ required: false },]} >
-                                    <Input type='number' placeholder="0.0" suffix={'Km'} defaultValue={0.0} disabled={!(enabled && options.distance.minDistance.isSet)} />
-                                </Form.Item>
-                            </Col>
-                            <Col xs={12}>
-                                <Form.Item label={customLabel('Max Distance', true, null, enabled)} name="R_Max_Distance" rules={[{ required: true, message: 'Empty!', },]}>
-                                    <Input type='number' placeholder="0.0" suffix={'Km'} defaultValue={10.0} disabled={!enabled} />
-                                </Form.Item>
-                            </Col>
-                        </Row>
-                    </Col>
-                </Row>
-                <Row gutter={[6]}>
-                    <Col xs={6}>
-                        <Checkbox onChange={onChangeLength} disabled={!enabled}>Length</Checkbox>
-                    </Col>
-                    <Col xs={18}>
-                        <Row gutter={[6]}>
-                            <Col xs={12}>
-                                <Form.Item label={customLabel('Min Length', true, null, enabled && lengthEnabled)} name="R_Min_Length" rules={[{ required: true, message: 'Empty!', },]}>
-                                    <Input type='number' placeholder="0.0" suffix={'Km'} defaultValue={0.0} disabled={!(enabled && lengthEnabled)} />
-                                </Form.Item>
-                            </Col>
-                            <Col xs={12}>
-                                <Form.Item label={customLabel('Max Length', false, onChangeMaxLengthLabel, enabled && lengthEnabled)} name="R_Max_Length" rules={[{ required: false },]}>
-                                    <Input type='number' placeholder="0.0" suffix={'Km'} defaultValue={10.0} disabled={!(enabled && lengthEnabled && options.length.maxLength.isSet)} />
-                                </Form.Item>
-                            </Col>
-                        </Row>
-                    </Col>
-                </Row>
-                <Row gutter={[6]}>
-                    <Col xs={6}>
-                        <Checkbox onChange={onChangeWidth} disabled={!enabled}>Width</Checkbox>
-                    </Col>
-                    <Col xs={18}>
-                        <Row gutter={[6]}>
-                            <Col xs={12}>
-                                <Form.Item label={customLabel('Min Width', true, null, enabled && widthEnabled)} name="R_Min_Width" rules={[{ required: true, message: 'Empty!', },]}>
-                                    <Input type='number' placeholder="0.0" suffix={'m'} defaultValue={0.0} disabled={!(enabled && widthEnabled)} />
-                                </Form.Item>
-                            </Col>
-                            <Col xs={12}>
-                                <Form.Item label={customLabel('Max Width', false, onChangeMaxWidthLabel, enabled && widthEnabled)} name="R_Max_Width" rules={[{ required: false },]}>
-                                    <Input type='number' placeholder="0.0" suffix={'m'} defaultValue={10.0} disabled={!(enabled && widthEnabled && options.width.maxWidth.isSet)} />
-                                </Form.Item>
-                            </Col>
-                        </Row>
-                    </Col>
-                </Row>
-                {/* <Row gutter={[6]}>
-                    <Col xs={6}>
-                        <Checkbox onChange={onChangeName} disabled={!enabled}>Name</Checkbox>
-                    </Col>
-                    <Col xs={18}>
-                        <Row gutter={[6]}>
-                            <Col xs={8}>
-                                <Form.Item label={customLabel('Method', true, null, enabled && nameEnabled)} name="R_Name_Include">
-                                    <Select
-                                        defaultValue="include"
-                                        onChange={handleChange}
-                                        options={[
-                                            {
-                                                value: 'include',
-                                                label: 'Include',
-                                            },
-                                            {
-                                                value: 'exact',
-                                                label: 'Exact',
-                                            },
-                                            {
-                                                value: 'start',
-                                                label: 'Start',
-                                            },
-                                            {
-                                                value: 'end',
-                                                label: 'End',
-                                                // disabled: true,
-                                            },
-                                        ]}
-                                        disabled={!(enabled && nameEnabled)}
+                                <Form.Item
+                                    label={customLabel('Min Distance', true, null, enabled)}
+                                    name="R_Min_Distance"
+                                    rules={[{ required: false }]}
+                                >
+                                    <Input
+                                        type='number'
+                                        onChange={onChangeRMinDistance}
+                                        placeholder="0.0"
+                                        suffix={'Km'}
+                                        disabled={!enabled}
+                                        value={r_min_distance}
                                     />
                                 </Form.Item>
                             </Col>
-                            <Col xs={16}>
-                                <Form.Item label={customLabel('Reference', true, null, enabled && nameEnabled)} name="R_Name_Ref" rules={[{ required: true, message: 'Empty!', },]}>
-                                    <Input type='text' disabled={!(enabled && nameEnabled)} />
+                            <Col xs={12}>
+                                <Form.Item
+                                    label={customLabel('Max Distance', true, null, enabled)}
+                                    name="R_Max_Distance"
+                                    rules={[{ required: false }]}
+                                >
+                                    <Input
+                                        type='number'
+                                        onChange={onChangeRMaxDistance}
+                                        placeholder="0.0"
+                                        suffix={'Km'}
+                                        disabled={!enabled}
+                                        value={r_max_distance}
+                                    />
                                 </Form.Item>
                             </Col>
                         </Row>
                     </Col>
-                </Row> */}
-            </p>
+                </Row>
+                <Row gutter={[6]}>
+                    <Col xs={6}>
+                        <span className='option-title'>Length</span>
+                    </Col>
+                    <Col xs={18}>
+                        <Row gutter={[6]}>
+                            <Col xs={12}>
+                                <Form.Item
+                                    label={customLabel('Min Length', true, null, enabled)}
+                                    name="R_Min_Length"
+                                    rules={[{ required: false }]}
+                                >
+                                    <Input
+                                        type='number'
+                                        onChange={onChangeRMinLength}
+                                        placeholder="0.0"
+                                        suffix={'Km'}
+                                        disabled={!enabled}
+                                        value={r_min_length}
+                                    />
+                                </Form.Item>
+                            </Col>
+                            <Col xs={12}>
+                                <Form.Item
+                                    label={customLabel('Max Length', true, null, enabled)}
+                                    name="R_Max_Length"
+                                    rules={[{ required: false }]}
+                                >
+                                    <Input
+                                        type='number'
+                                        onChange={onChangeRMaxLength}
+                                        placeholder="0.0"
+                                        suffix={'Km'}
+                                        disabled={!enabled}
+                                        value={r_max_length}
+                                    />
+                                </Form.Item>
+                            </Col>
+                        </Row>
+                    </Col>
+                </Row>
+                <Row gutter={[6]}>
+                    <Col xs={6}>
+                        <span className='option-title'>Width</span>
+                    </Col>
+                    <Col xs={18}>
+                        <Row gutter={[6]}>
+                            <Col xs={12}>
+                                <Form.Item
+                                    label={customLabel('Min Width', true, null, enabled)}
+                                    name="R_Min_Width"
+                                    rules={[{ required: false }]}
+                                >
+                                    <Input
+                                        type='number'
+                                        onChange={onChangeRMinWidth}
+                                        placeholder="0.0"
+                                        suffix={'m'}
+                                        disabled={!enabled}
+                                        value={r_min_width}
+                                    />
+                                </Form.Item>
+                            </Col>
+                            <Col xs={12}>
+                                <Form.Item
+                                    label={customLabel('Max Width', true, null, enabled)}
+                                    name="R_Max_Width"
+                                    rules={[{ required: false }]}
+                                >
+                                    <Input
+                                        type='number'
+                                        onChange={onChangeRMaxWidth}
+                                        placeholder="0.0"
+                                        suffix={'m'}
+                                        disabled={!enabled}
+                                        value={r_max_width}
+                                    />
+                                </Form.Item>
+                            </Col>
+                        </Row>
+                    </Col>
+                </Row>
+            </div>
         </>
     )
 }

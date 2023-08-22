@@ -1,120 +1,141 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Modal, Form, Input, Button, Row, Col, Divider, Collapse, Checkbox, Select } from 'antd'
+import { Form, Input, Row, Col } from 'antd'
+import customLabel from '../../../features/utils/CustomLabel'
+import { ErrorCheck } from '../Error/ErrorCheck'
+import {
+    setIMinDistance,
+    setIMaxDistance,
+    setIMinArea,
+    setIMaxArea,
+    setErrorMessage
+} from '../../../features/filter/OptionReducer'
+
+import './options.css'
 
 const LakeOptions = () => {
-    const customLabel = text => (
-        <Checkbox>{text}</Checkbox>
-    )
-    const handleChange = e => {
-        return (true)
+    const [enabled, setEnabled] = useState(true)
+    const [i_min_distance, set_i_min_distance] = useState('')
+    const [i_max_distance, set_i_max_distance] = useState('')
+    const [i_min_area, set_i_min_area] = useState('')
+    const [i_max_area, set_i_max_area] = useState('')
+
+    const dispatch = useDispatch()
+
+    const onChangeIMinDistance = e => {
+        const value = e.target.value
+        dispatch(setIMinDistance(value))
+        set_i_min_distance(value)
     }
+    const onChangeIMaxDistance = e => {
+        const value = e.target.value
+        dispatch(setIMaxDistance(value))
+        set_i_max_distance(value)
+    }
+    const onChangeIMinArea = e => {
+        const value = e.target.value
+        dispatch(setIMinArea(value))
+        set_i_min_area(value)
+    }
+    const onChangeIMaxArea = e => {
+        const value = e.target.value
+        dispatch(setIMaxArea(value))
+        set_i_max_area(value)
+    }
+
+    const options = useSelector(state => state, [])
+    dispatch(setErrorMessage(ErrorCheck(options)))
+
     return (
         <>
-            <p
+            <div
                 style={{
                     paddingLeft: 24,
                 }}
             >
                 <Row gutter={[6]}>
                     <Col xs={6}>
-                        <Checkbox>Distance</Checkbox>
+                        <span className='option-title'>Distance</span>
                     </Col>
                     <Col xs={18}>
                         <Row gutter={[6]}>
                             <Col xs={12}>
-                                <Form.Item label={customLabel('Min Distance')} name="R_Min_Distance" rules={[{ required: false },]} >
-                                    <Input type='number' placeholder="0.0" suffix={'Km'} defaultValue={0.0} />
-                                </Form.Item>
-                            </Col>
-                            <Col xs={12}>
-                                <Form.Item label="Max Distance" name="R_Max_Distance" rules={[{ required: true, message: 'Empty!', },]}>
-                                    <Input type='number' placeholder="0.0" suffix={'Km'} defaultValue={10.0} />
-                                </Form.Item>
-                            </Col>
-                        </Row>
-                    </Col>
-                </Row>
-                <Row gutter={[6]}>
-                    <Col xs={6}>
-                        <Checkbox>Length</Checkbox>
-                    </Col>
-                    <Col xs={18}>
-                        <Row gutter={[6]}>
-                            <Col xs={12}>
-                                <Form.Item label='Min Length' name="R_Min_Length" rules={[{ required: true, message: 'Empty!', },]}>
-                                    <Input type='number' placeholder="0.0" suffix={'Km'} defaultValue={0.0} />
-                                </Form.Item>
-                            </Col>
-                            <Col xs={12}>
-                                <Form.Item label={customLabel('Max Length')} name="R_Max_Length" rules={[{ required: false },]}>
-                                    <Input type='number' placeholder="0.0" suffix={'Km'} defaultValue={10.0} />
-                                </Form.Item>
-                            </Col>
-                        </Row>
-                    </Col>
-                </Row>
-                <Row gutter={[6]}>
-                    <Col xs={6}>
-                        <Checkbox>Width</Checkbox>
-                    </Col>
-                    <Col xs={18}>
-                        <Row gutter={[6]}>
-                            <Col xs={12}>
-                                <Form.Item label='Min Width' name="R_Min_Width" rules={[{ required: true, message: 'Empty!', },]}>
-                                    <Input type='number' placeholder="0.0" suffix={'m'} defaultValue={0.0} />
-                                </Form.Item>
-                            </Col>
-                            <Col xs={12}>
-                                <Form.Item label={customLabel('Max Width')} name="R_Max_Width" rules={[{ required: false },]}>
-                                    <Input type='number' placeholder="0.0" suffix={'m'} defaultValue={10.0} />
-                                </Form.Item>
-                            </Col>
-                        </Row>
-                    </Col>
-                </Row>
-                <Row gutter={[6]}>
-                    <Col xs={6}>
-                        <Checkbox>Name</Checkbox>
-                    </Col>
-                    <Col xs={18}>
-                        <Row gutter={[6]}>
-                            <Col xs={8}>
-                                <Form.Item label='Type' name="R_Name_Include">
-                                    <Select
-                                        defaultValue="Include"
-                                        onChange={handleChange}
-                                        options={[
-                                            {
-                                                value: 'include',
-                                                label: 'Include',
-                                            },
-                                            {
-                                                value: 'exact',
-                                                label: 'Exact',
-                                            },
-                                            {
-                                                value: 'start',
-                                                label: 'Start',
-                                            },
-                                            {
-                                                value: 'end',
-                                                label: 'End',
-                                                // disabled: true,
-                                            },
-                                        ]}
+                                <Form.Item
+                                    label={customLabel('Min Distance', true, null, enabled)}
+                                    name="I_Min_Distance"
+                                    rules={[{ required: false }]}
+                                >
+                                    <Input
+                                        type='number'
+                                        onChange={onChangeIMinDistance}
+                                        placeholder="0.0"
+                                        suffix={'Km'}
+                                        disabled={!enabled}
+                                        value={i_min_distance}
                                     />
                                 </Form.Item>
                             </Col>
-                            <Col xs={16}>
-                                <Form.Item label='Reference' name="R_Name_Ref" rules={[{ required: true, message: 'Empty!', },]}>
-                                    <Input type='text' />
+                            <Col xs={12}>
+                                <Form.Item
+                                    label={customLabel('Max Distance', true, null, enabled)}
+                                    name="I_Max_Distance"
+                                    rules={[{ required: false }]}
+                                >
+                                    <Input
+                                        type='number'
+                                        onChange={onChangeIMaxDistance}
+                                        placeholder="0.0"
+                                        suffix={'Km'}
+                                        disabled={!enabled}
+                                        value={i_max_distance}
+                                    />
                                 </Form.Item>
                             </Col>
                         </Row>
                     </Col>
                 </Row>
-            </p>
+                <Row gutter={[6]}>
+                    <Col xs={6}>
+                        <span className='option-title'>Area</span>
+                    </Col>
+                    <Col xs={18}>
+                        <Row gutter={[6]}>
+                            <Col xs={12}>
+                                <Form.Item
+                                    label={customLabel('Min Area', true, null, enabled)}
+                                    name="I_Min_Area"
+                                    rules={[{ required: false }]}
+                                >
+                                    <Input
+                                        type='number'
+                                        onChange={onChangeIMinArea}
+                                        placeholder="0.0"
+                                        suffix={'ha'}
+                                        disabled={!enabled}
+                                        value={i_min_area}
+                                    />
+                                </Form.Item>
+                            </Col>
+                            <Col xs={12}>
+                                <Form.Item
+                                    label={customLabel('Max Area', true, null, enabled)}
+                                    name="I_Max_Area"
+                                    rules={[{ required: false }]}
+                                >
+                                    <Input
+                                        type='number'
+                                        onChange={onChangeIMaxArea}
+                                        placeholder="0.0"
+                                        suffix={'ha'}
+                                        disabled={!enabled}
+                                        value={i_max_area}
+                                    />
+                                </Form.Item>
+                            </Col>
+                        </Row>
+                    </Col>
+                </Row>
+            </div>
         </>
     )
 }

@@ -1,4 +1,3 @@
-
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { FilterApi } from '../../app/FetchAPI';
 
@@ -14,58 +13,40 @@ export const fetchReducer = createAsyncThunk(
     }
 );
 const initialState = {
-    toSearch: {
-        isLand: false,
-        isForest: false,
-        isRiver: false,
-        isLake: false,
-        isOther: false,
+    landOption: {
+        l_min_area: '',
+        l_max_area: '',
+        l_min_aed: '',
+        l_max_aed: ''
     },
     options: {
-        land: {},
-        forest: {},
-        river: {
-            distance: {
-                isSet: false,
-                minDistance: {
-                    isSet: false,
-                    value: 0.0
-                },
-                maxDistance: {
-                    value: 10.0
-                }
-            },
-            length: {
-                isSet: false,
-                minLength: {
-                    value: 0.0
-                },
-                maxLength: {
-                    isSet: false,
-                    value: 10.0
-                }
-            },
-            width: {
-                isSet: false,
-                minWidth: {
-                    value: 0.0
-                },
-                maxWidth: {
-                    isSet: false,
-                    value: 10.0
-                }
-            },
-            name: {
-                isSet: false,
-                method: {
-                    value: 'Include'
-                },
-                reference: {
-                    value: ''
-                }
-            },
+        forest: {
+            minDistance: '',
+            maxDistance: '',
+            minArea: '',
+            maxArea: ''
         },
-        lake: {},
+        river: {
+            minDistance: '',
+            maxDistance: '',
+            minLength: '',
+            maxLength: '',
+            minWidth: '',
+            maxWidth: ''
+        },
+        lake: {
+            minDistance: '',
+            maxDistance: '',
+            minArea: '',
+            maxArea: ''
+        },
+        town: {
+            minDistance: '',
+            maxDistance: '',
+            minArea: '',
+            maxArea: '',
+            hospital: false
+        }
     },
     error: null
 }
@@ -73,56 +54,105 @@ const optionReducer = createSlice({
     name: 'optionReducer',
     initialState,
     reducers: {
-        setIsLand: (state, action) => {
-            state.toSearch.isLand = action.payload;
+        setLMinArea: (state, action) => {
+            state.landOption.l_min_area = action.payload;
         },
-        setIsForest: (state, action) => {
-            state.toSearch.isForest = action.payload;
+        setLMaxArea: (state, action) => {
+            state.landOption.l_max_area = action.payload;
         },
-        setIsRiver: (state, action) => {
-            state.toSearch.isRiver = action.payload;
+        setLMinAed: (state, action) => {
+            state.landOption.l_min_aed = action.payload;
         },
-        setIsLake: (state, action) => {
-            state.toSearch.isLake = action.payload;
+        setLMaxAed: (state, action) => {
+            state.landOption.l_max_aed = action.payload;
         },
-        setIsOther: (state, action) => {
-            state.toSearch.isOther = action.payload;
+        setFMinDistance: (state, action) => {
+            state.options.forest.minDistance = action.payload;
         },
-        setIsRiverDistance: (state, action) => {
-            state.options.river.distance.isSet = action.payload;
+        setFMaxDistance: (state, action) => {
+            state.options.forest.maxDistance = action.payload;
         },
-        setIsMinRiverDistance: (state, action) => {
-            state.options.river.distance.minDistance.isSet = action.payload;
+        setFMinArea: (state, action) => {
+            state.options.forest.minArea = action.payload;
         },
-        setIsRiverLength: (state, action) => {
-            state.options.river.length.isSet = action.payload;
+        setFMaxArea: (state, action) => {
+            state.options.forest.maxArea = action.payload;
         },
-        setIsRiverMaxLength: (state, action) => {
-            state.options.river.length.maxLength.isSet = action.payload;
+        setRMinDistance: (state, action) => {
+            state.options.river.minDistance = action.payload;
         },
-        setIsRiverWidth: (state, action) => {
-            state.options.river.width.isSet = action.payload;
+        setRMaxDistance: (state, action) => {
+            state.options.river.maxDistance = action.payload;
         },
-        setIsRiverMaxWidth: (state, action) => {
-            state.options.river.width.maxWidth.isSet = action.payload;
+        setRMinLength: (state, action) => {
+            state.options.river.minLength = action.payload;
         },
-        setIsRiverName: (state, action) => {
-            state.options.river.name.isSet = action.payload;
+        setRMaxLength: (state, action) => {
+            state.options.river.maxLength = action.payload;
         },
+        setRMinWidth: (state, action) => {
+            state.options.river.minWidth = action.payload;
+        },
+        setRMaxWidth: (state, action) => {
+            state.options.river.maxWidth = action.payload;
+        },
+        setIMinDistance: (state, action) => {
+            state.options.lake.minDistance = action.payload;
+        },
+        setIMaxDistance: (state, action) => {
+            state.options.lake.maxDistance = action.payload;
+        },
+        setIMinArea: (state, action) => {
+            state.options.lake.minArea = action.payload;
+        },
+        setIMaxArea: (state, action) => {
+            state.options.lake.maxArea = action.payload;
+        },
+        setTMinDistance: (state, action) => {
+            state.options.town.minDistance = action.payload;
+        },
+        setTMaxDistance: (state, action) => {
+            state.options.town.maxDistance = action.payload;
+        },
+        setTMinArea: (state, action) => {
+            state.options.town.minArea = action.payload;
+        },
+        setTMaxArea: (state, action) => {
+            state.options.town.maxArea = action.payload;
+        },
+        setTHospitalExist: (state, action) => {
+            state.options.town.hospital = action.payload;
+        },
+        setErrorMessage: (state, action) => {
+            console.log('checking errors')
+            state.error = action.payload;
+        }
     }
 });
 export const {
-    setIsLand,
-    setIsForest,
-    setIsRiver,
-    setIsLake,
-    setIsOther,
-    setIsRiverDistance,
-    setIsMinRiverDistance,
-    setIsRiverLength,
-    setIsRiverMaxLength,
-    setIsRiverWidth,
-    setIsRiverMaxWidth,
-    setIsRiverName,
+    setLMinArea,
+    setLMaxArea,
+    setLMinAed,
+    setLMaxAed,
+    setFMinDistance,
+    setFMaxDistance,
+    setFMinArea,
+    setFMaxArea,
+    setRMinDistance,
+    setRMaxDistance,
+    setRMinLength,
+    setRMaxLength,
+    setRMinWidth,
+    setRMaxWidth,
+    setIMinDistance,
+    setIMaxDistance,
+    setIMinArea,
+    setIMaxArea,
+    setTMinDistance,
+    setTMaxDistance,
+    setTMinArea,
+    setTMaxArea,
+    setTHospitalExist,
+    setErrorMessage,
 } = optionReducer.actions;
 export default optionReducer.reducer;

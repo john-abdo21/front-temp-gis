@@ -1,70 +1,65 @@
 import React, { useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux'
 import { Modal, Form, Input, Button, Row, Col, Divider, Collapse } from 'antd'
-import ButtonGlow from './ButtonGlow';
-import { fetchFilter } from "../../features/filter/FilterSlice";
-import { hide} from "../../features/filter/StateReducer";
-import "../../features/filter/filter.module.css";
+import Error from './Error'
+import ButtonGlow from './ButtonGlow'
+import { fetchFilter } from "../../features/filter/FilterSlice"
+import { hide } from "../../features/filter/StateReducer"
+import "../../features/filter/filter.module.css"
 
-import ItemsToSearch from './Options/ItemsToSearch';
+import ItemsToSearch from './Options/ItemsToSearch'
 
-import LandOptions from './Options/LandOptions';
-import ForestOptions from './Options/ForestOptions';
-import RiverOptions from './Options/RiverOptions';
-import LakeOptions from './Options/LakeOptions';
+import ForestOptions from './Options/ForestOptions'
+import RiverOptions from './Options/RiverOptions'
+import LakeOptions from './Options/LakeOptions'
+import TownOptions from './Options/TownOptions'
 
 
 
 const OptionCard = () => {
+  
+  const [enabled, setEnabled] = useState(true)
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
   const handleSubmit = (e) => {
-    dispatch(fetchFilter(options));
-    dispatch(hide());
-  };
-  const loading = useSelector(state => state.filter.loading, []);
+    dispatch(fetchFilter(options))
+    dispatch(hide())
+    setIsModalOpen(false)
+  }
+  const loading = useSelector(state => state.filter.loading, [])
   const options = useSelector(state => state.options, [])
-  const isLand = options.toSearch.isLand
-  const isForest = options.toSearch.isForest
-  const isRiver = options.toSearch.isRiver
-  const isLake = options.toSearch.isLake
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const showModal = () => {
-    setIsModalOpen(true);
-  };
+    setIsModalOpen(true)
+  }
   const handleOk = () => {
-    setIsModalOpen(false);
-  };
+    setIsModalOpen(false)
+  }
   const handleCancel = () => {
-    setIsModalOpen(false);
-  };
-
+    setIsModalOpen(false)
+  }
+  console.log('options',options)
 
   const items = [
     {
       key: '1',
-      label: false ? 'Land' : 'Land (Unset)',
-      children: <LandOptions />,
-    },
-    {
-      key: '2',
       label: false ? 'Forest' : 'Forest (Unset)',
       children: <ForestOptions />,
     },
     {
-      key: '3',
-      label: options.options.river.distance.isSet ? 'River' : 'River (Unset)',
+      key: '2',
+      label: false ? 'River' : 'River (Unset)',
       children: <RiverOptions />,
     },
     {
-      key: '4',
+      key: '3',
       label: false ? 'Lake' : 'Lake (Unset)',
       children: <LakeOptions />,
     },
     {
-      key: '5',
-      label: false ? 'Other' : 'Other (Unset)',
-      children: 'Other Options Goes Here...',
+      key: '4',
+      label: false ? 'Town' : 'Town (Unset)',
+      children: <TownOptions />,
     },
   ]
 
@@ -80,14 +75,18 @@ const OptionCard = () => {
         footer={[]}
       >
         <Form layout="vertical" onFinish={handleSubmit}>
-          <Divider orientation="left" plain> <span><h5>What are you going to search?</h5></span> </Divider>
+          <Divider plain> <span><h5>- Land Feature -</h5></span> </Divider>
           <Row justify="center">
             <ItemsToSearch />
           </Row>
-          
-          {(isLand || isForest || isRiver || isLake) && <Divider orientation="left" plain> <span><h5>Select more options below</h5></span> </Divider>}
-          {(isLand || isForest || isRiver || isLake) && <Collapse items={items} bordered={false} />}
-          
+
+          <Divider plain> <span><h5>- Search Condition -</h5></span> </Divider>
+          <Collapse items={items} bordered={false} />
+
+          <Row justify="center">
+            <Error />
+          </Row>
+
           <Form.Item style={{ marginRight: '15px', marginBottom: '-10px', marginTop: '10px' }}>
             <Row justify="end">
               <Col>
@@ -100,7 +99,7 @@ const OptionCard = () => {
         </Form>
       </Modal>
     </>
-  );
+  )
 }
 
 export default OptionCard
