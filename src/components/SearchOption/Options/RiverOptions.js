@@ -73,7 +73,7 @@ const RiverOptions = () => {
                     </Col>
                     <Col xs={18}>
                         <Row gutter={[6]}>
-                            <Col xs={12}>
+                            {/* <Col xs={12}>
                                 <Form.Item
                                     label={customLabel('Min Distance', true, null, enabled)}
                                     name="R_Min_Distance"
@@ -88,7 +88,7 @@ const RiverOptions = () => {
                                         value={r_min_distance}
                                     />
                                 </Form.Item>
-                            </Col>
+                            </Col> */}
                             <Col xs={12}>
                                 <Form.Item
                                     label={customLabel('Max Distance', true, null, enabled)}

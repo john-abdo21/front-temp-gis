@@ -60,7 +60,7 @@ const ItemsToSearch = () => {
                     </Col>
                     <Col xs={18}>
                         <Row gutter={[6]}>
-                            <Col xs={12}>
+                            {/* <Col xs={12}>
                                 <Form.Item
                                     label={customLabel('Min Area', true, null, enabled)}
                                     name="L_Min_Area"
@@ -75,7 +75,7 @@ const ItemsToSearch = () => {
                                         value={l_min_area}
                                     />
                                 </Form.Item>
-                            </Col>
+                            </Col> */}
                             <Col xs={12}>
                                 <Form.Item
                                     label={customLabel('Max Area', true, null, enabled)}

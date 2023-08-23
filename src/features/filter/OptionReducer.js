@@ -45,7 +45,8 @@ const initialState = {
             maxDistance: '',
             minArea: '',
             maxArea: '',
-            hospital: false
+            hospital: false,
+            station: false
         }
     },
     error: null
@@ -123,6 +124,9 @@ const optionReducer = createSlice({
         setTHospitalExist: (state, action) => {
             state.options.town.hospital = action.payload;
         },
+        setTStationExist: (state, action) => {
+            state.options.town.station = action.payload;
+        },
         setErrorMessage: (state, action) => {
             console.log('checking errors')
             state.error = action.payload;
@@ -153,6 +157,7 @@ export const {
     setTMinArea,
     setTMaxArea,
     setTHospitalExist,
+    setTStationExist,
     setErrorMessage,
 } = optionReducer.actions;
 export default optionReducer.reducer;

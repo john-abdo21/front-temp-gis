@@ -9,6 +9,7 @@ import {
   setTMinArea,
   setTMaxArea,
   setTHospitalExist,
+  setTStationExist,
   setErrorMessage
 } from '../../../features/filter/OptionReducer'
 
@@ -21,6 +22,7 @@ const TownOptions = () => {
   const [t_min_area, set_t_min_area] = useState('')
   const [t_max_area, set_t_max_area] = useState('')
   const [t_hospital_exist, set_t_hospital_exist] = useState(false)
+  const [t_station_exist, set_t_station_exist] = useState(false)
 
   const dispatch = useDispatch()
 
@@ -50,6 +52,12 @@ const TownOptions = () => {
     set_t_hospital_exist(value)
   }
 
+  const onChangeTStationExist = e => {
+    const value = e.target.checked
+    dispatch(setTStationExist(value))
+    set_t_station_exist(value)
+  }
+
   const options = useSelector(state => state, [])
   dispatch(setErrorMessage(ErrorCheck(options)))
 
@@ -66,7 +74,7 @@ const TownOptions = () => {
           </Col>
           <Col xs={18}>
             <Row gutter={[6]}>
-              <Col xs={12}>
+              {/* <Col xs={12}>
                 <Form.Item
                   label={customLabel('Min Distance', true, null, enabled)}
                   name="T_Min_Distance"
@@ -81,7 +89,7 @@ const TownOptions = () => {
                     value={t_min_distance}
                   />
                 </Form.Item>
-              </Col>
+              </Col> */}
               <Col xs={12}>
                 <Form.Item
                   label={customLabel('Max Distance', true, null, enabled)}
@@ -150,6 +158,9 @@ const TownOptions = () => {
             <Row gutter={[6]}>
               <Col xs={8}>
                 <Checkbox onChange={onChangeTHospitalExist} checked={t_hospital_exist}>Hospital</Checkbox>
+              </Col>
+              <Col xs={8}>
+                <Checkbox onChange={onChangeTStationExist} checked={t_station_exist}>Station</Checkbox>
               </Col>
             </Row>
           </Col>

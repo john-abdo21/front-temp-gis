@@ -59,7 +59,7 @@ const LakeOptions = () => {
                     </Col>
                     <Col xs={18}>
                         <Row gutter={[6]}>
-                            <Col xs={12}>
+                            {/* <Col xs={12}>
                                 <Form.Item
                                     label={customLabel('Min Distance', true, null, enabled)}
                                     name="I_Min_Distance"
@@ -74,7 +74,7 @@ const LakeOptions = () => {
                                         value={i_min_distance}
                                     />
                                 </Form.Item>
-                            </Col>
+                            </Col> */}
                             <Col xs={12}>
                                 <Form.Item
                                     label={customLabel('Max Distance', true, null, enabled)}
