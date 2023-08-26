@@ -3,6 +3,9 @@ import { useSelector, useDispatch } from 'react-redux'
 import { Modal, Form, Input, Button, Row, Col, Divider, Collapse } from 'antd'
 import Error from './Error'
 import ButtonGlow from './ButtonGlow'
+import SearchItems from './SearchItems'
+import OptionDesc from './SearchItems/OptionDesc'
+
 import { fetchFilter } from "../../features/filter/FilterSlice"
 import { hide } from "../../features/filter/StateReducer"
 import "../../features/filter/filter.module.css"
@@ -43,22 +46,26 @@ const OptionCard = () => {
   const items = [
     {
       key: '1',
-      label: false ? 'Forest' : 'Forest (Unset)',
+      label: options.options.forest.maxDistance ? 'Forest' : 'Forest (Unset)',
       children: <ForestOptions />,
     },
     {
       key: '2',
-      label: false ? 'River' : 'River (Unset)',
+      label: options.options.river.maxDistance ? 'River' : 'River (Unset)',
       children: <RiverOptions />,
     },
     {
       key: '3',
-      label: false ? 'Lake' : 'Lake (Unset)',
+      label: options.options.lake.maxDistance ? 'Lake' : 'Lake (Unset)',
       children: <LakeOptions />,
     },
     {
       key: '4',
-      label: false ? 'Town' : 'Town (Unset)',
+      label: (
+          options.options.town.hospitalLabel ||
+          options.options.town.stationLabel ||
+          options.options.town.schoolLabel
+        ) ? 'Others' : 'Others (Unset)',
       children: <TownOptions />,
     },
   ]
@@ -66,6 +73,8 @@ const OptionCard = () => {
   return (
     <>
       <ButtonGlow onClick={showModal} />
+      <SearchItems />
+      <OptionDesc />
       <Modal
         title="Search Options"
         open={isModalOpen}

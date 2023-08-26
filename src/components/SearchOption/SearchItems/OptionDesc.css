@@ -1,0 +1,10 @@
+.option-card {
+  width: 200px;
+  height: 300px;
+  position: fixed;
+  left: 10%;
+  top: 15%;
+  background: #00000033;
+  border-radius: 10px;
+  z-index: 100;
+}

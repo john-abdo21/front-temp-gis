@@ -34,7 +34,7 @@ const MapView = () => {
   const ForestData = useSelector((state) => state.data.forest);
   const LandData = useSelector((state) => state.data.land);
   const HospitalData = useSelector((state) => state.data.hospital);
-  console.log('R', ReverData)
+  console.log('R', LandData)
   console.log('L', LakeData)
 
   const mapRef = useRef(null); // ref to store the Map instance
@@ -113,10 +113,10 @@ const MapView = () => {
   });
   const landpolygonStyle = new Style({
     fill: new Fill({
-      color: '#c58734',
+      color: '#ff000033',
     }),
     stroke: new Stroke({
-      color: '#c58734',
+      color: '#ff0000',
       width: 1,
     }),
   });
@@ -224,16 +224,18 @@ const MapView = () => {
     const start_time = new Date();
     const end_time = new Date();
     console.log(`${end_time - start_time} ms`);
-    console.log(LandData)
     const format = new GeoJSON();
     const vectorSource = mapRef.current.getLayers().getArray()[1].getSource(); // Assuming VectorLayer is at index 1
     // vectorSource.clear();
-
-    const LandFeatures = format.readFeatures(LandData, {
-      dataProjection: 'EPSG:3035', // Specify the data projection as EPSG:4326
+    LandData.forEach(item=>
+    {
+    console.log('item',item[0])
+    const LandFeatures = format.readFeatures(item[0], {
+      dataProjection: 'EPSG:3857', // Specify the data projection as EPSG:4326
       featureProjection: 'EPSG:3857', // Specify the feature projection as EPSG:3857
     });
     // Apply styles to the features based on their geometry type
+    console.log('Modified',LandFeatures)
     LandFeatures.forEach((feature) => {
       const geometryType = feature.getGeometry().getType();
       if (geometryType === 'Point') {
@@ -254,6 +256,7 @@ const MapView = () => {
     //     vectorSource.removeFeatures(LandFeatures);
     // }
     vectorSource.addFeatures(LandFeatures);
+  })
   }, [LandData]);
 
   useEffect(() => {

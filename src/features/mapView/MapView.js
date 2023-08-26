@@ -119,16 +119,11 @@ const MapView = () => {
     const vectorSource = mapRef.current.getLayers().getArray()[1].getSource(); // Assuming VectorLayer is at index 1
     vectorSource.clear(); // Clear existing features
     const format = new GeoJSON();
-    const RiverFeatures = format.readFeatures(searchResult, {
-      dataProjection: 'EPSG:3857', // Specify the data projection as EPSG:4326
-      featureProjection: 'EPSG:3857', // Specify the feature projection as EPSG:3857
-    });
     // const LakeFeatures = format.readFeatures(searchResult['lake'], {
     //   dataProjection: "EPSG:3035", // Specify the data projection as EPSG:4326
     //   featureProjection: 'EPSG:3857', // Specify the feature projection as EPSG:3857
     // });
     // const features=searchResult;
-    console.log('GeoJSON:', RiverFeatures);
     // Style for points
     const pointStyle = new Style({
       image: new Circle({
@@ -172,32 +167,40 @@ const MapView = () => {
     //     width: 1,
     //   }),
     // });
-
-    // Apply styles to the features based on their geometry type
-    RiverFeatures.forEach((feature) => {
-      const geometryType = feature.getGeometry().getType();
-      if (geometryType === 'Point') {
-        feature.setStyle(pointStyle);
-      } else if (geometryType === 'LineString' || geometryType === 'MultiLineString') {
-        feature.setStyle(lineStyle);
-      } else if (geometryType === 'Polygon' || geometryType === 'MultiPolygon') {
-        feature.setStyle(polygonStyle);
-      }
-    });
-    // LakeFeatures.forEach((feature) => {
-    //   const geometryType = feature.getGeometry().getType();
-    //   if (geometryType === 'Point') {
-    //     feature.setStyle(pointStyle);
-    //   } else if (geometryType === 'LineString' || geometryType === 'MultiLineString') {
-    //     feature.setStyle(lineStyle);
-    //   } else if (geometryType === 'Polygon' || geometryType === 'MultiPolygon') {
-    //     feature.setStyle(lakepolygonStyle);
-    //   }
-    // });
-    // features.setStyle(polygonStyle);
-
-    vectorSource.addFeatures(RiverFeatures); // Add new features        
-    // vectorSource.addFeatures(LakeFeatures); // Add new features        
+    console.log('searchResult:', searchResult);
+    searchResult.forEach(item => {
+      const RiverFeatures = format.readFeatures(item[0], {
+        dataProjection: 'EPSG:3857', // Specify the data projection as EPSG:4326
+        featureProjection: 'EPSG:3857', // Specify the feature projection as EPSG:3857
+      });
+      console.log('GeoJSON:', RiverFeatures);
+  
+      // Apply styles to the features based on their geometry type
+      RiverFeatures.forEach((feature) => {
+        const geometryType = feature.getGeometry().getType();
+        if (geometryType === 'Point') {
+          feature.setStyle(pointStyle);
+        } else if (geometryType === 'LineString' || geometryType === 'MultiLineString') {
+          feature.setStyle(lineStyle);
+        } else if (geometryType === 'Polygon' || geometryType === 'MultiPolygon') {
+          feature.setStyle(polygonStyle);
+        }
+      });
+      // LakeFeatures.forEach((feature) => {
+      //   const geometryType = feature.getGeometry().getType();
+      //   if (geometryType === 'Point') {
+      //     feature.setStyle(pointStyle);
+      //   } else if (geometryType === 'LineString' || geometryType === 'MultiLineString') {
+      //     feature.setStyle(lineStyle);
+      //   } else if (geometryType === 'Polygon' || geometryType === 'MultiPolygon') {
+      //     feature.setStyle(lakepolygonStyle);
+      //   }
+      // });
+      // features.setStyle(polygonStyle);
+  
+      vectorSource.addFeatures(RiverFeatures); // Add new features
+      // vectorSource.addFeatures(LakeFeatures); // Add new features
+    })     
   }, [searchResult]);
 
   return (

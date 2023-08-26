@@ -10,6 +10,12 @@ import {
   setTMaxArea,
   setTHospitalExist,
   setTStationExist,
+  setTHospitalDistance,
+  setTStationDistance,
+  setTSchoolDistance,
+  setTHospitalLabel,
+  setTStationLabel,
+  setTSchoolLabel,
   setErrorMessage
 } from '../../../features/filter/OptionReducer'
 
@@ -23,6 +29,12 @@ const TownOptions = () => {
   const [t_max_area, set_t_max_area] = useState('')
   const [t_hospital_exist, set_t_hospital_exist] = useState(false)
   const [t_station_exist, set_t_station_exist] = useState(false)
+  const [t_hospital_distance, set_t_hospital_distance] = useState('')
+  const [t_station_distance, set_t_station_distance] = useState('')
+  const [t_school_distance, set_t_school_distance] = useState('')
+  const [t_hospital_label, set_t_hospital_label] = useState(false)
+  const [t_station_label, set_t_station_label] = useState(false)
+  const [t_school_label, set_t_school_label] = useState(false)
 
   const dispatch = useDispatch()
 
@@ -58,6 +70,42 @@ const TownOptions = () => {
     set_t_station_exist(value)
   }
 
+  const onChangeTHospitalDistance = e => {
+    const value = e.target.value
+    dispatch(setTHospitalDistance(value))
+    set_t_hospital_distance(value)
+  }
+
+  const onChangeTStationDistance = e => {
+    const value = e.target.value
+    dispatch(setTStationDistance(value))
+    set_t_station_distance(value)
+  }
+
+  const onChangeTSchoolDistance = e => {
+    const value = e.target.value
+    dispatch(setTSchoolDistance(value))
+    set_t_school_distance(value)
+  }
+
+  const onChangeHospitalLabel = e => {
+    const value = e.target.checked
+    dispatch(setTHospitalLabel(value))
+    set_t_hospital_label(value)
+  }
+
+  const onChangeStationLabel = e => {
+    const value = e.target.checked
+    dispatch(setTStationLabel(value))
+    set_t_station_label(value)
+  }
+
+  const onChangeSchoolLabel = e => {
+    const value = e.target.checked
+    dispatch(setTSchoolLabel(value))
+    set_t_school_label(value)
+  }
+
   const options = useSelector(state => state, [])
   dispatch(setErrorMessage(ErrorCheck(options)))
 
@@ -68,13 +116,13 @@ const TownOptions = () => {
           paddingLeft: 24,
         }}
       >
-        <Row gutter={[6]}>
+        {/* <Row gutter={[6]}>
           <Col xs={6}>
             <span className='option-title'>Distance</span>
           </Col>
           <Col xs={18}>
             <Row gutter={[6]}>
-              {/* <Col xs={12}>
+              <Col xs={12}>
                 <Form.Item
                   label={customLabel('Min Distance', true, null, enabled)}
                   name="T_Min_Distance"
@@ -89,10 +137,10 @@ const TownOptions = () => {
                     value={t_min_distance}
                   />
                 </Form.Item>
-              </Col> */}
+              </Col>
               <Col xs={12}>
                 <Form.Item
-                  label={customLabel('Max Distance', true, null, enabled)}
+                  label={customLabel('', true, null, enabled)}
                   name="T_Max_Distance"
                   rules={[{ required: false }]}
                 >
@@ -108,8 +156,8 @@ const TownOptions = () => {
               </Col>
             </Row>
           </Col>
-        </Row>
-        <Row gutter={[6]}>
+        </Row> */}
+        {/* <Row gutter={[6]}>
           <Col xs={6}>
             <span className='option-title'>Area</span>
           </Col>
@@ -149,18 +197,60 @@ const TownOptions = () => {
               </Col>
             </Row>
           </Col>
-        </Row>
+        </Row> */}
         <Row gutter={[6]}>
           <Col xs={6}>
-            <span className='option-title'>Others</span>
+            <span className='option-title'>Distance</span>
           </Col>
           <Col xs={18}>
             <Row gutter={[6]}>
               <Col xs={8}>
-                <Checkbox onChange={onChangeTHospitalExist} checked={t_hospital_exist}>Hospital</Checkbox>
+                <Form.Item
+                  label={customLabel('Hospital', false, onChangeHospitalLabel, enabled)}
+                  name="T_Hospital_Distance"
+                  rules={[{ required: false }]}
+                >
+                  <Input
+                    type='number'
+                    onChange={onChangeTHospitalDistance}
+                    placeholder="0.0"
+                    suffix={'Km'}
+                    disabled={!t_hospital_label}
+                    value={t_hospital_distance}
+                  />
+                </Form.Item>
               </Col>
               <Col xs={8}>
-                <Checkbox onChange={onChangeTStationExist} checked={t_station_exist}>Station</Checkbox>
+                <Form.Item
+                  label={customLabel('Station', false, onChangeStationLabel, enabled)}
+                  name="T_Station_Distance"
+                  rules={[{ required: false }]}
+                >
+                  <Input
+                    type='number'
+                    onChange={onChangeTStationDistance}
+                    placeholder="0.0"
+                    suffix={'Km'}
+                    disabled={!t_station_label}
+                    value={t_station_distance}
+                  />
+                </Form.Item>
+              </Col>
+              <Col xs={8}>
+                <Form.Item
+                  label={customLabel('School', false, onChangeSchoolLabel, enabled)}
+                  name="T_School_Distance"
+                  rules={[{ required: false }]}
+                >
+                  <Input
+                    type='number'
+                    onChange={onChangeTSchoolDistance}
+                    placeholder="0.0"
+                    suffix={'Km'}
+                    disabled={!t_school_label}
+                    value={t_school_distance}
+                  />
+                </Form.Item>
               </Col>
             </Row>
           </Col>

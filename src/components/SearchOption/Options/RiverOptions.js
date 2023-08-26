@@ -91,7 +91,7 @@ const RiverOptions = () => {
                             </Col> */}
                             <Col xs={12}>
                                 <Form.Item
-                                    label={customLabel('Max Distance', true, null, enabled)}
+                                    label={customLabel('Distance', true, null, enabled)}
                                     name="R_Max_Distance"
                                     rules={[{ required: false }]}
                                 >

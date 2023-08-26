@@ -46,7 +46,13 @@ const initialState = {
             minArea: '',
             maxArea: '',
             hospital: false,
-            station: false
+            station: false,
+            hospitalDistance: '',
+            stationDistance: '',
+            schoolDistance: '',
+            hospitalLabel: false,
+            stationLabel: false,
+            schoolLabel: false,
         }
     },
     error: null
@@ -127,6 +133,24 @@ const optionReducer = createSlice({
         setTStationExist: (state, action) => {
             state.options.town.station = action.payload;
         },
+        setTHospitalDistance: (state, action) => {
+            state.options.town.hospitalDistance = action.payload;
+        },
+        setTStationDistance: (state, action) => {
+            state.options.town.stationDistance = action.payload;
+        },
+        setTSchoolDistance: (state, action) => {
+            state.options.town.schoolDistance = action.payload;
+        },
+        setTHospitalLabel: (state, action) => {
+            state.options.town.hospitalLabel = action.payload;
+        },
+        setTStationLabel: (state, action) => {
+            state.options.town.stationLabel = action.payload;
+        },
+        setTSchoolLabel: (state, action) => {
+            state.options.town.schoolLabel = action.payload;
+        },
         setErrorMessage: (state, action) => {
             console.log('checking errors')
             state.error = action.payload;
@@ -159,5 +183,11 @@ export const {
     setTHospitalExist,
     setTStationExist,
     setErrorMessage,
+    setTHospitalDistance,
+    setTStationDistance,
+    setTSchoolDistance,
+    setTHospitalLabel,
+    setTStationLabel,
+    setTSchoolLabel,
 } = optionReducer.actions;
 export default optionReducer.reducer;
